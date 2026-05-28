@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>بوت الجدول اليومي</title>
+    <meta name="description" content="بوت يرسل لك جدولك الدراسي الخاص بك يومياً — ويحلله بالذكاء الاصطناعي!" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="بوت الجدول اليومي" />
+    <meta property="og:description" content="بوت يرسل لك جدولك الدراسي الخاص بك يومياً — ويحلله بالذكاء الاصطناعي!" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="بوت الجدول اليومي" />
+    <meta name="twitter:description" content="بوت يرسل لك جدولك الدراسي الخاص بك يومياً — ويحلله بالذكاء الاصطناعي!" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      /* Thmanyah Serif Display — restricted font, loaded locally if available */
+      /* @FONTWARNING[{"type": "restricted", "family": "thmanyah serif display-Medium", "weight": "500", "style": "normal", "allowsCrossOrigin": false}] */
+      @font-face {
+        font-family: "thmanyah serif display-Medium";
+        src: local("thmanyah serif display-Medium"),
+             local("ThmanyahSerifDisplay-Medium");
+        font-weight: 500;
+        font-style: normal;
+        font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
+      }
+      /* @FONTWARNING[{"type": "restricted", "family": "thmanyah serif display-Bold", "weight": "700", "style": "normal", "allowsCrossOrigin": false}] */
+      @font-face {
+        font-family: "thmanyah serif display-Bold";
+        src: local("thmanyah serif display-Bold"),
+             local("ThmanyahSerifDisplay-Bold");
+        font-weight: 700;
+        font-style: normal;
+        font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
+      }
+
+      /* Apply stylistic alternates globally to all thmanyah text */
+      [style*="thmanyah"], .thmanyah {
+        font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
+        -webkit-font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
