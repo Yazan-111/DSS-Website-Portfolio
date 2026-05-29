@@ -1,35 +1,46 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 
 const thmanyahMedium =
   "'thmanyah serif display-Medium', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold =
   "'thmanyah serif display-Bold', 'Noto Naskh Arabic', 'Amiri', serif";
 
+const GOOGLE_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfSfqcehEgwgyfegruOFs2jVGFRYX5nIywuToSFSRxIBKcfBA/formResponse";
+const ENTRY_NAME = "entry.5245";
+const ENTRY_SUBJECT = "entry.5266";
+const ENTRY_DETAILS = "entry.5286";
+
 type FormState = { name: string; subject: string; details: string };
 
 export default function ContactPage() {
   const [form, setForm] = useState<FormState>({ name: "", subject: "", details: "" });
   const [sent, setSent] = useState(false);
-
-  const mutation = useMutation({
-    mutationFn: (data: FormState) =>
-      apiRequest("POST", "/api/contact", data),
-    onSuccess: () => {
-      setSent(true);
-      setForm({ name: "", subject: "", details: "" });
-    },
-  });
+  const [isPending, setIsPending] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.subject.trim() || !form.details.trim()) return;
-    mutation.mutate(form);
+    setIsPending(true);
+    setIsError(false);
+    try {
+      const body = new FormData();
+      body.append(ENTRY_NAME, form.name);
+      body.append(ENTRY_SUBJECT, form.subject);
+      body.append(ENTRY_DETAILS, form.details);
+      await fetch(GOOGLE_FORM_URL, { method: "POST", body, mode: "no-cors" });
+      setSent(true);
+      setForm({ name: "", subject: "", details: "" });
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -39,7 +50,6 @@ export default function ContactPage() {
       style={{ backgroundColor: "#efefef" }}
     >
       <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-3 px-3 py-3 sm:px-4 sm:py-4 lg:gap-4 lg:px-5 lg:py-5">
-
         {/* ─── Heading ─── */}
         <div
           className="flex min-h-[180px] w-full items-center justify-center rounded-2xl px-6 py-10 text-center sm:min-h-[220px] sm:rounded-[22px] sm:px-10"
@@ -61,28 +71,21 @@ export default function ContactPage() {
 
         {/* ─── Form card ─── */}
         <div
-          className="w-full rounded-2xl px-5 py-8 sm:rounded-[22px] sm:px-10 sm:py-10 md:px-16 md:py-12 lg:px-24"
-          style={{ backgroundColor: "#e2d9d1" }}
+          className="mx-auto w-full max-w-[720px] rounded-2xl px-6 py-8 sm:rounded-[22px] sm:px-10 sm:py-10"
+          style={{ backgroundColor: "rgba(110,83,58,0.07)" }}
         >
           {sent ? (
-            <div className="flex flex-col items-center gap-4 py-10 text-center">
-              <span
+            <div className="flex flex-col items-center gap-4 py-8 text-center">
+              <p
                 style={{
-                  fontFamily: thmanyahMedium,
-                  fontSize: "clamp(1.6rem, 3.5vw, 3rem)",
+                  fontFamily: thmanyahBold,
+                  fontSize: "clamp(1.4rem, 3vw, 2rem)",
                   color: "#3a2e24",
-                  letterSpacing: "-0.03em",
                 }}
               >
                 شكراً لتواصلك معنا 🎉
-              </span>
-              <p
-                style={{
-                  fontFamily: thmanyahMedium,
-                  fontSize: "1rem",
-                  color: "rgba(58,46,36,0.65)",
-                }}
-              >
+              </p>
+              <p style={{ fontFamily: thmanyahMedium, color: "#6e533a" }}>
                 تم حفظ رسالتك بنجاح، سنرد عليك في أقرب وقت.
               </p>
               <button
@@ -103,12 +106,12 @@ export default function ContactPage() {
           ) : (
             <form onSubmit={handleSubmit} className="mx-auto flex max-w-[680px] flex-col gap-5">
               <p
-                className="mb-1"
                 style={{
                   fontFamily: thmanyahMedium,
                   fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
-                  color: "rgba(58,46,36,0.65)",
-                  lineHeight: 1.6,
+                  color: "#6e533a",
+                  textAlign: "center",
+                  marginBottom: "0.5rem",
                 }}
               >
                 لديك مشكلة أو اقتراح؟ نسعد بتواصلك معنا
@@ -159,8 +162,7 @@ export default function ContactPage() {
                 />
               </Field>
 
-              {/* Error */}
-              {mutation.isError && (
+              {isError && (
                 <p
                   style={{
                     fontFamily: thmanyahMedium,
@@ -174,7 +176,7 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                disabled={mutation.isPending}
+                disabled={isPending}
                 data-testid="button-submit"
                 className="mt-1 w-full rounded-2xl py-4 text-center transition-opacity hover:opacity-85 active:opacity-70 disabled:opacity-60"
                 style={{
@@ -185,15 +187,14 @@ export default function ContactPage() {
                   fontWeight: 700,
                   letterSpacing: "-0.02em",
                   border: "none",
-                  cursor: mutation.isPending ? "wait" : "pointer",
+                  cursor: isPending ? "wait" : "pointer",
                 }}
               >
-                {mutation.isPending ? "جارٍ الحفظ..." : "إرسال"}
+                {isPending ? "جارنِ الإرسال..." : "إرسال"}
               </button>
             </form>
           )}
         </div>
-
       </div>
     </main>
   );
