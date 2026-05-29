@@ -5,11 +5,8 @@ const thmanyahMedium =
 const thmanyahBold =
   "'thmanyah serif display-Bold', 'Noto Naskh Arabic', 'Amiri', serif";
 
-const GOOGLE_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSfSfqcehEgwgyfegruOFs2jVGFRYX5nIywuToSFSRxIBKcfBA/formResponse";
-const ENTRY_NAME = "entry.5245";
-const ENTRY_SUBJECT = "entry.5266";
-const ENTRY_DETAILS = "entry.5286";
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzVlpVZGv_YhlFGRIkGL7w7p0MUup7LRkzJP-gLO7rC0bNJjDwEKgeb7xCgHzGUSleuTA/exec";
 
 type FormState = { name: string; subject: string; details: string };
 
@@ -29,15 +26,17 @@ export default function ContactPage() {
     setIsPending(true);
     setIsError(false);
     try {
-      const params = new URLSearchParams();
-      params.append(ENTRY_NAME, form.name);
-      params.append(ENTRY_SUBJECT, form.subject);
-      params.append(ENTRY_DETAILS, form.details);
-      await fetch(GOOGLE_FORM_URL, {
+const response = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
-        body: params,
-        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          subject: form.subject,
+          details: form.details,
+        }),
       });
+      const result = await response.json();
+      if (!result.success) throw new Error(result.error || "Unknown error");
       setSent(true);
       setForm({ name: "", subject: "", details: "" });
     } catch {
