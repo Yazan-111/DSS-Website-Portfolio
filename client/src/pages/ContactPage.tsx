@@ -28,7 +28,7 @@ export default function ContactPage() {
     try {
 const response = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({
           name: form.name,
           subject: form.subject,
