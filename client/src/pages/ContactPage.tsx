@@ -26,8 +26,9 @@ export default function ContactPage() {
     setIsPending(true);
     setIsError(false);
     try {
-const response = await fetch(APPS_SCRIPT_URL, {
+await fetch(APPS_SCRIPT_URL, {
         method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({
           name: form.name,
@@ -35,9 +36,8 @@ const response = await fetch(APPS_SCRIPT_URL, {
           details: form.details,
         }),
       });
-      const result = await response.json();
-      if (!result.success) throw new Error(result.error || "Unknown error");
-      setSent(true);
+      // no-cors: assume success (cannot read response body)
+            setSent(true);
       setForm({ name: "", subject: "", details: "" });
     } catch {
       setIsError(true);
