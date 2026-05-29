@@ -29,11 +29,15 @@ export default function ContactPage() {
     setIsPending(true);
     setIsError(false);
     try {
-      const body = new FormData();
-      body.append(ENTRY_NAME, form.name);
-      body.append(ENTRY_SUBJECT, form.subject);
-      body.append(ENTRY_DETAILS, form.details);
-      await fetch(GOOGLE_FORM_URL, { method: "POST", body, mode: "no-cors" });
+      const params = new URLSearchParams();
+      params.append(ENTRY_NAME, form.name);
+      params.append(ENTRY_SUBJECT, form.subject);
+      params.append(ENTRY_DETAILS, form.details);
+      await fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        body: params,
+        mode: "no-cors",
+      });
       setSent(true);
       setForm({ name: "", subject: "", details: "" });
     } catch {
