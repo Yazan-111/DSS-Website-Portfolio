@@ -8,6 +8,8 @@ import { Footer } from "@/components/Footer";
 import { DssLandingPage } from "@/pages/DssLandingPage";
 import GuidePage from "@/pages/GuidePage";
 import ContactPage from "@/pages/ContactPage";
+import AnnouncementsPage from "@/pages/AnnouncementsPage";
+import AdminPage from "@/pages/AdminPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +22,8 @@ function Router() {
             <Route path="/" component={DssLandingPage} />
             <Route path="/guide" component={GuidePage} />
             <Route path="/contact" component={ContactPage} />
+            <Route path="/announcements" component={AnnouncementsPage} />
+            <Route path="/admin" component={AdminPage} />
             <Route component={NotFound} />
           </Switch>
         </div>
