@@ -52,12 +52,12 @@ export default function GuidePage() {
               style={{ paddingTop: "56.25%" }}
             >
               <iframe
-                className="absolute inset-0 h-full w-full"
-                src={GUIDE_EMBED_URL}
-                style={{ border: "1px solid rgba(0,0,0,0.1)" }}
-                allowFullScreen
-                title="دليل استخدام البوت"
-              />
+                  src="https://drive.google.com/file/d/1GcNJPIOVER-Fsxak0QUGy9XdC1gujWlz/preview"
+                  width="100%"
+                  height="700"
+                  allow="autoplay"
+                  className="rounded-2xl border-0 w-full"
+                />
             </div>
 
             {/* Desktop centered 800×450 */}
