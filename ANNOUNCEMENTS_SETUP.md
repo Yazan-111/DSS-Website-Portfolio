@@ -116,14 +116,14 @@ https://script.google.com/macros/s/ABC...XYZ/exec
 
 ابحث عن السطر:
 ```typescript
-const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi_ID/exec";
 ```
 
-استبدل `YOUR_SCRIPT_ID` بالرابط اللي نسخته في الخطوة 2.4.
+استبدل `AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi_ID` بالرابط اللي نسخته في الخطوة 2.4.
 
 ### 3.2 في `client/src/pages/AdminPage.tsx`
 
-نفس الشيء — استبدل `YOUR_SCRIPT_ID`.
+نفس الشيء — استبدل `AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi_ID`.
 
 ### 3.3 Commit & Push
 
