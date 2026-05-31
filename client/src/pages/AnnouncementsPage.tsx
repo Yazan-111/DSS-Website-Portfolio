@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 const thmanyahMedium = "'thmanyah serif display-Medium', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold = "'thmanyah serif display-Bold', 'Noto Naskh Arabic', 'Amiri', serif";
 
-// ✅ ضع هنا رابط Google Apps Script بعد النشر
+// رابط Google Apps Script
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi/exec";
 
-type Priority = "أولوية قصوى" | "أولوية متوسطة" | "تحديثات";
+type Priority = "أولوية قصوى" | "أولوية متوسطة" | "التحديثات";
 
 interface Announcement {
   id: string;
@@ -16,251 +16,268 @@ interface Announcement {
   priority: Priority;
 }
 
-const priorityStyle: Record<Priority, { badge: string; border: string; bg: string }> = {
-  "أولوية قصوى": {
-    badge: "bg-red-900/40 text-red-400",
-    border: "border-r-red-500",
-    bg: "bg-[#2c1a1a]",
-  },
-  "أولوية متوسطة": {
-    badge: "bg-yellow-900/40 text-yellow-400",
-    border: "border-r-yellow-500",
-    bg: "bg-[#2c2116]",
-  },
-  تحديثات: {
-    badge: "bg-blue-900/40 text-blue-400",
-    border: "border-r-blue-500",
-    bg: "bg-[#1a2030]",
-  },
-};
-
-function SkeletonCard() {
-  return (
-    <div className="rounded-2xl border border-[#5a4535] bg-[#2c2116] p-6 mb-4 animate-pulse">
-      <div className="flex justify-between mb-4">
-        <div className="h-5 w-28 rounded-full bg-[#3b2a1a]" />
-        <div className="h-4 w-20 rounded bg-[#3b2a1a]" />
-      </div>
-      <div className="h-6 w-2/3 rounded bg-[#3b2a1a] mb-3" />
-      <div className="h-4 w-full rounded bg-[#3b2a1a] mb-2" />
-      <div className="h-4 w-4/5 rounded bg-[#3b2a1a]" />
+const SkeletonCard = () => (
+  <div className="bg-[#C4A584] rounded-[32px] p-6 animate-pulse">
+    <div className="flex justify-between items-start mb-4">
+      <div className="h-6 bg-[#A08060] rounded w-24"></div>
+      <div className="h-8 bg-[#A08060] rounded-full w-32"></div>
     </div>
-  );
-}
+    <div className="h-8 bg-[#A08060] rounded w-3/4 mb-3"></div>
+    <div className="h-4 bg-[#A08060] rounded w-full mb-2"></div>
+    <div className="h-4 bg-[#A08060] rounded w-5/6"></div>
+  </div>
+);
 
-function AnnouncementCard({
-  ann,
+const AnnouncementCard = ({
+  announcement,
   onClick,
 }: {
-  ann: Announcement;
+  announcement: Announcement;
   onClick: () => void;
-}) {
-  const style = priorityStyle[ann.priority] ?? priorityStyle["تحديثات"];
+}) => {
+  const priorityStyles: Record<Priority, { bg: string; text: string; border: string }> = {
+    "أولوية قصوى": {
+      bg: "bg-red-100",
+      text: "text-red-600",
+      border: "border-red-300",
+    },
+    "أولوية متوسطة": {
+      bg: "bg-yellow-100",
+      text: "text-yellow-600",
+      border: "border-yellow-300",
+    },
+    التحديثات: {
+      bg: "bg-blue-100",
+      text: "text-blue-600",
+      border: "border-blue-300",
+    },
+  };
+
+  const style = priorityStyles[announcement.priority] || priorityStyles["التحديثات"];
+
   return (
     <div
       onClick={onClick}
-      className={`rounded-2xl border border-[#5a4535] border-r-4 ${style.border} ${style.bg} p-6 mb-4 cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-xl`}
+      className="bg-[#C4A584] rounded-[32px] p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+      dir="rtl"
     >
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-start mb-3">
         <span
-          className={`text-xs font-bold px-3 py-1 rounded-full ${style.badge}`}
+          className="text-sm"
+          style={{ fontFamily: thmanyahMedium }}
         >
-          {ann.priority}
+          {announcement.date}
         </span>
-        <span className="text-xs text-[#9a8878]">{ann.date}</span>
+        <span
+          className={`px-4 py-1.5 rounded-full text-sm font-medium ${style.bg} ${style.text} border ${style.border}`}
+          style={{ fontFamily: thmanyahMedium }}
+        >
+          {announcement.priority}
+        </span>
       </div>
-      <h2
-        className="text-xl font-extrabold text-[#f0e6d8] mb-2"
+
+      <h3
+        className="text-2xl font-bold mb-3 text-gray-900"
         style={{ fontFamily: thmanyahBold }}
       >
-        {ann.title}
-      </h2>
-      <p className="text-sm text-[#9a8878] leading-relaxed line-clamp-2">
-        {ann.body}
+        {announcement.title}
+      </h3>
+
+      <p
+        className="text-gray-700 line-clamp-2 leading-relaxed"
+        style={{ fontFamily: thmanyahMedium }}
+      >
+        {announcement.body}
       </p>
-      <span className="inline-block mt-3 text-sm font-semibold text-[#c8a97e]">
-        اقرأ المزيد &larr;
-      </span>
+
+      <div className="mt-4 flex justify-center">
+        <button
+          className="text-sm underline hover:no-underline"
+          style={{ fontFamily: thmanyahMedium }}
+        >
+          إقرأ المزيد
+        </button>
+      </div>
     </div>
   );
-}
+};
 
 export default function AnnouncementsPage() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | Priority>("all");
-  const [selected, setSelected] = useState<Announcement | null>(null);
+  const [filter, setFilter] = useState<Priority | "الكل">("الكل");
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
 
   useEffect(() => {
-    fetch(`${SCRIPT_URL}?action=get`)
-      .then((r) => r.json())
-      .then((data: Announcement[]) => {
-        setAnnouncements(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    fetchAnnouncements();
   }, []);
 
-  const filters: ("all" | Priority)[] = [
-    "all",
-    "أولوية قصوى",
-    "أولوية متوسطة",
-    "تحديثات",
-  ];
-
-  const filterLabel: Record<string, string> = {
-    all: "الكل",
-    "أولوية قصوى": "أولوية قصوى",
-    "أولوية متوسطة": "أولوية متوسطة",
-    تحديثات: "تحديثات",
+  const fetchAnnouncements = async () => {
+    try {
+      const response = await fetch(SCRIPT_URL);
+      const result = await response.json();
+      if (result.success) {
+        setAnnouncements(result.data);
+      }
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const filtered =
-    filter === "all"
-      ? announcements
-      : announcements.filter((a) => a.priority === filter);
+  const filteredAnnouncements = filter === "الكل"
+    ? announcements
+    : announcements.filter((a) => a.priority === filter);
 
-  const today = filtered.filter((a) =>
-    a.date.startsWith(new Date().toISOString().slice(0, 10))
-  );
-  const older = filtered.filter(
-    (a) => !a.date.startsWith(new Date().toISOString().slice(0, 10))
-  );
+  const today = new Date().toISOString().split("T")[0];
+  const todayAnnouncements = filteredAnnouncements.filter((a) => a.date === today);
+  const olderAnnouncements = filteredAnnouncements.filter((a) => a.date !== today);
 
   return (
-    <main dir="rtl" className="min-h-screen" style={{ backgroundColor: "#1e1e1e" }}>
-      {/* Hero */}
-      <div
-        className="flex min-h-[160px] w-full items-center justify-center px-6 py-10 text-center"
-        style={{ backgroundColor: "#6e533a" }}
-      >
-        <div>
-          <h1
-            className="text-4xl text-white sm:text-5xl"
-            style={{ fontFamily: thmanyahBold }}
-          >
-            الإعلانات
-          </h1>
-          <p className="mt-2 text-sm text-[#d4b896]">
-            تابع آخر الأخبار والتحديثات الخاصة بنظام DSS
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#FFFDF9] py-8" dir="rtl">
+      {/* العنوان الرئيسي */}
+      <div className="bg-[#6B5344] rounded-[32px] py-8 mb-8 max-w-4xl mx-auto">
+        <h1
+          className="text-5xl font-bold text-center text-white"
+          style={{ fontFamily: thmanyahBold }}
+        >
+          الإعلانات
+        </h1>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap justify-center gap-3 py-6 px-4">
-        {filters.map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all ${
-              filter === f
-                ? "bg-[#c8a97e] border-[#c8a97e] text-[#1e1e1e]"
-                : "bg-[#2c2116] border-[#5a4535] text-[#9a8878] hover:border-[#c8a97e] hover:text-[#c8a97e]"
-            }`}
-            style={{ fontFamily: thmanyahMedium }}
-          >
-            {filterLabel[f]}
-          </button>
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="mx-auto max-w-2xl px-4 pb-16">
-        {loading ? (
-          <>
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
-          </>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="text-5xl mb-4">📭</div>
-            <h3
-              className="text-xl font-bold text-[#f0e6d8] mb-2"
-              style={{ fontFamily: thmanyahBold }}
+      {/* أزرار الفلترة */}
+      <div className="flex justify-center gap-4 mb-8 flex-wrap max-w-4xl mx-auto px-4">
+        {(["الكل", "أولوية قصوى", "أولوية متوسطة", "التحديثات"] as const).map(
+          (priority) => (
+            <button
+              key={priority}
+              onClick={() => setFilter(priority)}
+              className={`px-6 py-2.5 rounded-full transition-all duration-300 ${
+                filter === priority
+                  ? "bg-[#6B5344] text-white shadow-lg scale-105"
+                  : "bg-[#C4A584] text-gray-800 hover:bg-[#B39474]"
+              }`}
+              style={{ fontFamily: thmanyahMedium }}
             >
-              لا توجد إعلانات حالياً
-            </h3>
-            <p className="text-sm text-[#9a8878]">
-              أنت على علم بكل شيء! تحقق لاحقاً للاطلاع على أي تحديثات.
+              {priority === "الكل" ? "الفلترة" : priority}
+            </button>
+          )
+        )}
+      </div>
+
+      {/* الإعلانات */}
+      <div className="max-w-4xl mx-auto px-4">
+        {loading ? (
+          <div className="space-y-6">
+            {[1, 2, 3].map((i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : filteredAnnouncements.length === 0 ? (
+          <div className="text-center py-12">
+            <p
+              className="text-xl text-gray-600"
+              style={{ fontFamily: thmanyahMedium }}
+            >
+              لا توجد إعلانات في الوقت الحالي
             </p>
           </div>
         ) : (
           <>
-            {today.length > 0 && (
-              <>
-                <div
-                  className="text-xs font-bold text-[#9a8878] uppercase tracking-widest mb-3 mt-2 pb-2 border-b border-[#5a4535]"
+            {todayAnnouncements.length > 0 && (
+              <div className="mb-8">
+                <h2
+                  className="text-2xl font-bold mb-4 text-gray-800"
+                  style={{ fontFamily: thmanyahBold }}
                 >
                   اليوم
+                </h2>
+                <div className="space-y-6">
+                  {todayAnnouncements.map((announcement) => (
+                    <AnnouncementCard
+                      key={announcement.id}
+                      announcement={announcement}
+                      onClick={() => setSelectedAnnouncement(announcement)}
+                    />
+                  ))}
                 </div>
-                {today.map((a) => (
-                  <AnnouncementCard
-                    key={a.id}
-                    ann={a}
-                    onClick={() => setSelected(a)}
-                  />
-                ))}
-              </>
+              </div>
             )}
-            {older.length > 0 && (
-              <>
-                <div className="text-xs font-bold text-[#9a8878] uppercase tracking-widest mb-3 mt-6 pb-2 border-b border-[#5a4535]">
+
+            {olderAnnouncements.length > 0 && (
+              <div>
+                <h2
+                  className="text-2xl font-bold mb-4 text-gray-800"
+                  style={{ fontFamily: thmanyahBold }}
+                >
                   سابقاً
+                </h2>
+                <div className="space-y-6">
+                  {olderAnnouncements.map((announcement) => (
+                    <AnnouncementCard
+                      key={announcement.id}
+                      announcement={announcement}
+                      onClick={() => setSelectedAnnouncement(announcement)}
+                    />
+                  ))}
                 </div>
-                {older.map((a) => (
-                  <AnnouncementCard
-                    key={a.id}
-                    ann={a}
-                    onClick={() => setSelected(a)}
-                  />
-                ))}
-              </>
+              </div>
             )}
           </>
         )}
       </div>
 
-      {/* Modal */}
-      {selected && (
+      {/* Modal للإعلان التفصيلي */}
+      {selectedAnnouncement && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
-          onClick={() => setSelected(null)}
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          onClick={() => setSelectedAnnouncement(null)}
         >
           <div
-            className="relative w-full max-w-lg rounded-2xl border border-[#5a4535] bg-[#2c2116] p-8 max-h-[80vh] overflow-y-auto"
+            className="bg-[#C4A584] rounded-[32px] p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
+            dir="rtl"
           >
-            <button
-              onClick={() => setSelected(null)}
-              className="absolute top-4 left-4 w-8 h-8 rounded-full bg-[#3b2a1a] text-[#f0e6d8] flex items-center justify-center text-lg"
-            >
-              ✕
-            </button>
-            <span
-              className={`text-xs font-bold px-3 py-1 rounded-full ${
-                priorityStyle[selected.priority]?.badge
-              }`}
-            >
-              {selected.priority}
-            </span>
+            <div className="flex justify-between items-start mb-4">
+              <span
+                className="text-sm text-gray-700"
+                style={{ fontFamily: thmanyahMedium }}
+              >
+                {selectedAnnouncement.date}
+              </span>
+              <span
+                className="px-4 py-1.5 rounded-full text-sm font-medium"
+                style={{ fontFamily: thmanyahMedium }}
+              >
+                {selectedAnnouncement.priority}
+              </span>
+            </div>
+
             <h2
-              className="text-2xl font-extrabold text-[#f0e6d8] mt-3 mb-1"
+              className="text-3xl font-bold mb-6 text-gray-900"
               style={{ fontFamily: thmanyahBold }}
             >
-              {selected.title}
+              {selectedAnnouncement.title}
             </h2>
-            <p className="text-xs text-[#9a8878] mb-5">{selected.date}</p>
+
             <div
-              className="text-sm text-[#f0e6d8] leading-loose whitespace-pre-line"
+              className="text-gray-800 leading-relaxed whitespace-pre-wrap mb-6"
               style={{ fontFamily: thmanyahMedium }}
             >
-              {selected.body}
+              {selectedAnnouncement.body}
             </div>
+
+            <button
+              onClick={() => setSelectedAnnouncement(null)}
+              className="w-full bg-[#6B5344] text-white py-3 rounded-full hover:bg-[#5A4436] transition-colors"
+              style={{ fontFamily: thmanyahBold }}
+            >
+              إغلاق
+            </button>
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }
