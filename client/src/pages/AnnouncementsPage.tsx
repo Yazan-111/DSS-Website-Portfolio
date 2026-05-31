@@ -4,7 +4,7 @@ const thmanyahMedium = "'thmanyah serif display-Medium', 'Noto Naskh Arabic', 'A
 const thmanyahBold = "'thmanyah serif display-Bold', 'Noto Naskh Arabic', 'Amiri', serif";
 
 // ✅ ضع هنا رابط Google Apps Script بعد النشر
-const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi/exec";
 
 type Priority = "أولوية قصوى" | "أولوية متوسطة" | "تحديثات";
 
