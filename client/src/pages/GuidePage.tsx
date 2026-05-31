@@ -1,5 +1,5 @@
 const GUIDE_EMBED_URL =
-  "https://embed.figma.com/slides/Y8MQCxDN2UAoNe7CiZkeUl/DSS-Using-Guide?node-id=3-2&embed-host=share";
+  "https://drive.google.com/file/d/1GcNJPIOVER-Fsxak0QUGy9XdC1gujWlz/preview";
 
 const thmanyahMedium =
   "'thmanyah serif display-Medium', 'Noto Naskh Arabic', 'Amiri', serif";
@@ -46,30 +46,29 @@ export default function GuidePage() {
 
           {/* Embed */}
           <div className="px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
-            {/* Mobile responsive */}
+
+            {/* Mobile */}
             <div
               className="relative w-full overflow-hidden rounded-xl md:hidden"
-              style={{ paddingTop: "56.25%" }}
+              style={{ paddingTop: "133%" }}
             >
               <iframe
-                  src="https://drive.google.com/file/d/1GcNJPIOVER-Fsxak0QUGy9XdC1gujWlz/preview"
-                  width="100%"
-                  height="700"
-                  allow="autoplay"
-                  className="rounded-2xl border-0 w-full"
-                />
+                src={GUIDE_EMBED_URL}
+                allow="autoplay"
+                className="absolute inset-0 h-full w-full rounded-xl border-0"
+              />
             </div>
 
-            {/* Desktop centered 800×450 */}
-            <div className="hidden md:flex md:justify-center">
-                <iframe
-  src="https://drive.google.com/file/d/1GcNJPIOVER-Fsxak0QUGy9XdC1gujWlz/preview"
-  width="100%"
-  height="700"
-  allow="autoplay"
-  className="rounded-2xl border-0 w-full"
-/>
+            {/* Desktop */}
+            <div className="hidden md:block">
+              <iframe
+                src={GUIDE_EMBED_URL}
+                allow="autoplay"
+                className="w-full rounded-2xl border-0"
+                style={{ height: "80vh", minHeight: "600px" }}
+              />
             </div>
+
           </div>
         </div>
 
