@@ -43,6 +43,13 @@
         -webkit-font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
       }
     </style>
+      <script>
+        var redirect = sessionStorage.getItem('redirect');
+        if (redirect && redirect !== window.location.href) {
+        sessionStorage.removeItem('redirect');
+        window.history.replaceState(null, null, redirect);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
