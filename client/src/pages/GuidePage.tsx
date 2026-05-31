@@ -62,18 +62,13 @@ export default function GuidePage() {
 
             {/* Desktop centered 800×450 */}
             <div className="hidden md:flex md:justify-center">
-              <iframe
-                width="800"
-                height="450"
-                src={GUIDE_EMBED_URL}
-                style={{
-                  border: "1px solid rgba(0,0,0,0.1)",
-                  borderRadius: "12px",
-                  display: "block",
-                }}
-                allowFullScreen
-                title="دليل استخدام البوت"
-              />
+                <iframe
+  src="https://drive.google.com/file/d/1GcNJPIOVER-Fsxak0QUGy9XdC1gujWlz/preview"
+  width="100%"
+  height="700"
+  allow="autoplay"
+  className="rounded-2xl border-0 w-full"
+/>
             </div>
           </div>
         </div>
