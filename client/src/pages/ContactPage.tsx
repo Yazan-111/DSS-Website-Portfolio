@@ -4,8 +4,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 const thmanyahMedium = "'thmanyah serif display-Medium', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold = "'thmanyah serif display-Bold', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi/exec";
-
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhuiFyQlCBIAJYQjmWIypMxGTExw2l49xf_K-VX9M5dGP7EjPJerC-MiYW3JIWVDXMIA/exec";
 export default function ContactPage() {
   const [name, setName] = useState("");
     const { t, language } = useLanguage();
