@@ -31,8 +31,8 @@ function Router() {
         </div>
         <Footer />
       </div>
-                </LanguageProvider>
     </WouterRouter>
+              </LanguageProvider>
   );
 }
 
