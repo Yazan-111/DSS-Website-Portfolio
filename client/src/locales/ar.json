@@ -16,6 +16,8 @@
     "login": "تسجيل دخول المشرف",
     "password": "كلمة المرور",
     "enterPassword": "أدخل كلمة المرور",
+        "verificationCode": "رمز التحقق",
+    "enterVerificationCode": "أدخل رمز التحقق",
     "loginButton": "دخول",
     "logout": "تسجيل خروج",
     "announcementsTab": "نشر إعلان",
