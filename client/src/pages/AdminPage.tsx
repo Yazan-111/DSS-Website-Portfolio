@@ -1,194 +1,304 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const thmanyahMedium = "'thmanyah serif display-Medium', 'Noto Naskh Arabic', 'Amiri', serif";
-const thmanyahBold = "'thmanyah serif display-Bold', 'Noto Naskh Arabic', 'Amiri', serif";
-
-// ✅ ضع هنا رابط Google Apps Script بعد النشر
+const thmanyahMedium = "'thmanyah serif display-Medium', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
+const thmanyahBold = "'thmanyah serif display-Bold', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi/exec";
+const ADMIN_PASSWORD = "DSS2026";
 
 type Priority = "أولوية قصوى" | "أولوية متوسطة" | "تحديثات";
 
+interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  date: string;
+}
+
 export default function AdminPage() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [activeTab, setActiveTab] = useState<"announcements" | "contacts">("announcements");
+
+  // Announcements state
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [priority, setPriority] = useState<Priority>("تحديثات");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [announcementMsg, setAnnouncementMsg] = useState("");
+  const [announcementLoading, setAnnouncementLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  // Contacts state
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contactsLoading, setContactsLoading] = useState(false);
+  const [contactsError, setContactsError] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === ADMIN_PASSWORD) {
+      setAuthenticated(true);
+      localStorage.setItem("adminAuth", "true");
+    } else {
+      alert("❌ كلمة مرور خاطئة");
+    }
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    localStorage.removeItem("adminAuth");
+  };
+
+  const fetchContacts = async () => {
+    setContactsLoading(true);
+    setContactsError("");
+    try {
+      const res = await fetch(`${SCRIPT_URL}?action=getContacts`);
+      const result = await res.json();
+      if (result.success) {
+        setContacts(result.data);
+      } else {
+        setContactsError("تعذر تحميل الرسائل");
+      }
+    } catch {
+      setContactsError("تعذر الاتصال بالخادم");
+    } finally {
+      setContactsLoading(false);
+    }
+  };
+
+  const handleAnnouncementSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !body.trim()) {
-      setMessage("⚠️ الرجاء ملء جميع الحقول");
+      setAnnouncementMsg("❌ الرجاء ملء جميع الحقول");
       return;
     }
-
-    setLoading(true);
-    setMessage("");
-
+    setAnnouncementLoading(true);
+    setAnnouncementMsg("");
     try {
-      const now = new Date().toLocaleString("ar-SA", {
-        dateStyle: "short",
-        timeStyle: "short",
-      });
-
+      const now = new Date().toLocaleString("ar-SA", { dateStyle: "short", timeStyle: "short" });
       const res = await fetch(`${SCRIPT_URL}?action=add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, body, priority, date: now }),
       });
-
       if (res.ok) {
-        setMessage("✅ تم نشر الإعلان بنجاح");
+        setAnnouncementMsg("✅ تم نشر الإعلان بنجاح");
         setTitle("");
         setBody("");
         setPriority("تحديثات");
       } else {
-        setMessage("❌ حدث خطأ في النشر");
+        setAnnouncementMsg("❌ حدث خطأ في النشر");
       }
-    } catch (err) {
-      setMessage("❌ حدث خطأ في الاتصال");
+    } catch {
+      setAnnouncementMsg("❌ حدث خطأ في الاتصال");
     } finally {
-      setLoading(false);
+      setAnnouncementLoading(false);
     }
+  };
+
+  useEffect(() => {
+    const auth = localStorage.getItem("adminAuth");
+    if (auth === "true") setAuthenticated(true);
+  }, []);
+
+  useEffect(() => {
+    if (authenticated && activeTab === "contacts") {
+      fetchContacts();
+    }
+  }, [authenticated, activeTab]);
+
+  const inputStyle = {
+    fontFamily: thmanyahMedium,
+    backgroundColor: "#fff",
+    border: "1.5px solid #C4A584",
+    borderRadius: "12px",
+    padding: "12px 16px",
+    width: "100%",
+    outline: "none",
+    fontSize: "1rem",
+    color: "#1e1e1e",
+  };
+
+  if (!authenticated) {
+    return (
+      <main dir="rtl" className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#efefef" }}>
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded-[32px] shadow-lg max-w-sm w-full">
+          <h1 className="text-3xl text-center mb-6" style={{ fontFamily: thmanyahBold, color: "#6e533a" }}>
+            🔒 تسجيل دخول المشرف
+          </h1>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="أدخل كلمة المرور"
+            style={inputStyle}
+            required
+          />
+          <button
+            type="submit"
+            className="w-full mt-5 py-3 rounded-2xl text-white text-lg"
+            style={{ backgroundColor: "#6e533a", fontFamily: thmanyahBold }}
+          >
+            دخول
+          </button>
+        </form>
+      </main>
+    );
   }
 
   return (
-    <main dir="rtl" className="min-h-screen" style={{ backgroundColor: "#1e1e1e" }}>
-      {/* Hero */}
-      <div
-        className="flex min-h-[160px] w-full items-center justify-center px-6 py-10 text-center"
-        style={{ backgroundColor: "#6e533a" }}
-      >
-        <div>
-          <h1
-            className="text-4xl text-white sm:text-5xl"
-            style={{ fontFamily: thmanyahBold }}
-          >
-            لوحة الإدارة
-          </h1>
-          <p className="mt-2 text-sm text-[#d4b896]">
-            إضافة إعلان جديد إلى الصفحة الرئيسية
-          </p>
-        </div>
+    <main dir="rtl" className="min-h-screen" style={{ backgroundColor: "#efefef" }}>
+      {/* Header */}
+      <div className="bg-[#6e533a] px-6 py-4 flex justify-between items-center">
+        <h1 className="text-2xl text-white" style={{ fontFamily: thmanyahBold }}>🛠️ لوحة التحكم</h1>
+        <button
+          onClick={handleLogout}
+          className="text-white px-4 py-2 rounded-lg"
+          style={{ backgroundColor: "#5a3e28", fontFamily: thmanyahMedium }}
+        >
+          🚪 تسجيل خروج
+        </button>
       </div>
 
-      {/* Form */}
-      <div className="mx-auto max-w-2xl px-4 py-10">
-        <form
-          onSubmit={handleSubmit}
-          className="rounded-2xl border border-[#5a4535] bg-[#2c2116] p-8"
+      {/* Tabs */}
+      <div className="flex gap-2 p-4">
+        <button
+          onClick={() => setActiveTab("announcements")}
+          className={`px-6 py-2 rounded-xl transition-colors ${
+            activeTab === "announcements" ? "bg-[#6e533a] text-white" : "bg-white text-[#6e533a]"
+          }`}
+          style={{ fontFamily: thmanyahMedium }}
         >
-          {/* Title */}
-          <div className="mb-5">
-            <label
-              className="block mb-2 text-sm font-semibold text-[#f0e6d8]"
-              style={{ fontFamily: thmanyahMedium }}
-            >
-              عنوان الإعلان
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-[#1e1e1e] border border-[#5a4535] text-[#f0e6d8] focus:outline-none focus:border-[#c8a97e] transition-colors"
-              style={{ fontFamily: thmanyahMedium }}
-              placeholder="مثال: عطلة يوم الأحد"
-            />
-          </div>
+          📢 نشر إعلان
+        </button>
+        <button
+          onClick={() => setActiveTab("contacts")}
+          className={`px-6 py-2 rounded-xl transition-colors ${
+            activeTab === "contacts" ? "bg-[#6e533a] text-white" : "bg-white text-[#6e533a]"
+          }`}
+          style={{ fontFamily: thmanyahMedium }}
+        >
+          📬 الرسائل الواردة ({contacts.length})
+        </button>
+      </div>
 
-          {/* Body */}
-          <div className="mb-5">
-            <label
-              className="block mb-2 text-sm font-semibold text-[#f0e6d8]"
-              style={{ fontFamily: thmanyahMedium }}
-            >
-              نص الإعلان
-            </label>
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              rows={6}
-              className="w-full px-4 py-3 rounded-lg bg-[#1e1e1e] border border-[#5a4535] text-[#f0e6d8] focus:outline-none focus:border-[#c8a97e] transition-colors resize-none"
-              style={{ fontFamily: thmanyahMedium }}
-              placeholder="اكتب تفاصيل الإعلان هنا..."
-            />
-          </div>
-
-          {/* Priority */}
-          <div className="mb-6">
-            <label
-              className="block mb-3 text-sm font-semibold text-[#f0e6d8]"
-              style={{ fontFamily: thmanyahMedium }}
-            >
-              الأولوية
-            </label>
-            <div className="flex flex-wrap gap-3">
-              {(["أولوية قصوى", "أولوية متوسطة", "تحديثات"] as Priority[]).map(
-                (p) => (
-                  <button
-                    key={p}
-                    type="button"
-                    onClick={() => setPriority(p)}
-                    className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all ${
-                      priority === p
-                        ? "bg-[#c8a97e] border-[#c8a97e] text-[#1e1e1e]"
-                        : "bg-transparent border-[#5a4535] text-[#9a8878] hover:border-[#c8a97e] hover:text-[#c8a97e]"
-                    }`}
-                    style={{ fontFamily: thmanyahMedium }}
-                  >
-                    {p}
-                  </button>
-                )
+      {/* Content */}
+      <div className="px-4 pb-10">
+        {activeTab === "announcements" ? (
+          <div className="max-w-2xl mx-auto bg-white p-8 rounded-[32px] shadow">
+            <h2 className="text-2xl mb-6" style={{ fontFamily: thmanyahBold, color: "#6e533a" }}>
+              ✨ نشر إعلان جديد
+            </h2>
+            <form onSubmit={handleAnnouncementSubmit} className="grid gap-5">
+              <div>
+                <label className="block mb-1 text-sm text-[#5a3e28]" style={{ fontFamily: thmanyahMedium }}>
+                  عنوان الإعلان
+                </label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="مثال: اختبار اليوم في الرياضيات"
+                  style={inputStyle}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm text-[#5a3e28]" style={{ fontFamily: thmanyahMedium }}>
+                  محتوى الإعلان
+                </label>
+                <textarea
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                  placeholder="اكتب تفاصيل الإعلان هنا..."
+                  rows={5}
+                  style={{ ...inputStyle, resize: "vertical" }}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm text-[#5a3e28]" style={{ fontFamily: thmanyahMedium }}>
+                  الأولوية
+                </label>
+                <select
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value as Priority)}
+                  style={inputStyle}
+                >
+                  <option value="تحديثات">تحديثات</option>
+                  <option value="أولوية متوسطة">أولوية متوسطة</option>
+                  <option value="أولوية قصوى">أولوية قصوى</option>
+                </select>
+              </div>
+              {announcementMsg && (
+                <div
+                  className="text-center p-3 rounded-xl"
+                  style={{
+                    backgroundColor: announcementMsg.includes("✅") ? "#d4edda" : "#f8d7da",
+                    color: announcementMsg.includes("✅") ? "#155724" : "#721c24",
+                    fontFamily: thmanyahMedium,
+                  }}
+                >
+                  {announcementMsg}
+                </div>
               )}
-            </div>
+              <button
+                type="submit"
+                disabled={announcementLoading}
+                className="py-3 rounded-xl text-white text-lg disabled:opacity-50"
+                style={{ backgroundColor: "#6e533a", fontFamily: thmanyahBold }}
+              >
+                {announcementLoading ? "جاري النشر..." : "🚀 نشر الإعلان"}
+              </button>
+            </form>
           </div>
-
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 rounded-lg text-[#1e1e1e] font-bold transition-all disabled:opacity-50"
-            style={{
-              fontFamily: thmanyahBold,
-              background: loading ? "#9a8878" : "#c8a97e",
-            }}
-          >
-            {loading ? "جاري النشر..." : "نشر الإعلان"}
-          </button>
-
-          {/* Message */}
-          {message && (
-            <div
-              className={`mt-4 p-3 rounded-lg text-sm font-semibold text-center ${
-                message.startsWith("✅")
-                  ? "bg-green-900/30 text-green-400"
-                  : "bg-red-900/30 text-red-400"
-              }`}
-              style={{ fontFamily: thmanyahMedium }}
-            >
-              {message}
-            </div>
-          )}
-        </form>
-
-        {/* Instructions */}
-        <div className="mt-8 rounded-2xl border border-[#5a4535] bg-[#2c2116] p-6">
-          <h3
-            className="text-lg font-bold text-[#c8a97e] mb-3"
-            style={{ fontFamily: thmanyahBold }}
-          >
-            💡 تعليمات
-          </h3>
-          <ul
-            className="text-sm text-[#9a8878] space-y-2 leading-relaxed"
-            style={{ fontFamily: thmanyahMedium }}
-          >
-            <li>• تأكد من ملء جميع الحقول قبل النشر</li>
-            <li>• سيتم إضافة التاريخ والوقت تلقائياً</li>
-            <li>• يمكنك مشاهدة الإعلان في <a href="/DSS-Website-Portfolio/announcements" className="text-[#c8a97e] underline">صفحة الإعلانات</a></li>
-            <li>• لتفعيل النظام، اتبع التعليمات في <code className="px-2 py-1 bg-[#1e1e1e] rounded text-[#c8a97e]">scripts/apps-script.js</code></li>
-          </ul>
-        </div>
+        ) : (
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl mb-6" style={{ fontFamily: thmanyahBold, color: "#6e533a" }}>
+              📬 الرسائل الواردة
+            </h2>
+            {contactsLoading ? (
+              <div className="text-center py-10" style={{ fontFamily: thmanyahMedium }}>
+                ⏳ جاري التحميل...
+              </div>
+            ) : contactsError ? (
+              <div className="text-center py-10 text-red-500" style={{ fontFamily: thmanyahMedium }}>
+                {contactsError}
+              </div>
+            ) : contacts.length === 0 ? (
+              <div className="text-center py-10 text-gray-500" style={{ fontFamily: thmanyahMedium }}>
+                🛑 لا توجد رسائل حالياً
+              </div>
+            ) : (
+              <div className="grid gap-4">
+                {contacts.map((c) => (
+                  <div
+                    key={c.id}
+                    className="bg-white p-6 rounded-[24px] shadow"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <p className="text-lg font-bold text-[#1e1e1e]" style={{ fontFamily: thmanyahBold }}>
+                          {c.name}
+                        </p>
+                        {c.email && (
+                          <p className="text-sm text-gray-600" style={{ fontFamily: thmanyahMedium, direction: "ltr" }}>
+                            {c.email}
+                          </p>
+                        )}
+                      </div>
+                      <span className="text-xs text-gray-500" style={{ fontFamily: thmanyahMedium }}>
+                        {c.date}
+                      </span>
+                    </div>
+                    <p className="text-[#3a2a1a] leading-relaxed" style={{ fontFamily: thmanyahMedium }}>
+                      {c.message}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </main>
   );
