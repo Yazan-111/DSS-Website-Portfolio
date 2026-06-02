@@ -1,0 +1,50 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "botGuide": "دليل استخدام البوت",
+    "contact": "تواصل معنا"
+  },
+  "home": {
+    "title": "الجدول الدراسي اليومي",
+    "subtitle": "DSS",
+    "description": "بوت تلجرام يرسل لك جدولك الدراسي اليومي كل صباح",
+    "getStarted": "ابدأ الآن",
+    "learnMore": "تعلم المزيد"
+  },
+  "admin": {
+    "title": "لوحة التحكم",
+    "login": "تسجيل دخول المشرف",
+    "password": "كلمة المرور",
+    "enterPassword": "أدخل كلمة المرور",
+    "loginButton": "دخول",
+    "logout": "تسجيل خروج",
+    "announcementsTab": "نشر إعلان",
+    "messagesTab": "الرسائل الواردة",
+    "announcementTitle": "عنوان الإعلان",
+    "announcementContent": "محتوى الإعلان",
+    "announcementContentPlaceholder": "اكتب تفاصيل الإعلان هنا...",
+    "priority": "الأولوية",
+    "experiments": "تجريبيات",
+    "publish": "نشر الإعلان",
+    "noMessages": "تعذر الاتصال بالخادم",
+    "loading": "جارٍ التحميل..."
+  },
+  "announcements": {
+    "title": "الإعلانات",
+    "noAnnouncements": "لا توجد إعلانات حالياً",
+    "loading": "جارٍ التحميل..."
+  },
+  "contact": {
+    "title": "تواصل معنا",
+    "nameLabel": "الاسم",
+    "namePlaceholder": "أدخل اسمك",
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "بريدك الإلكتروني",
+    "messageLabel": "الرسالة",
+    "messagePlaceholder": "اكتب رسالتك هنا...",
+    "submit": "إرسال",
+    "sending": "جارٍ الإرسال...",
+    "success": "تم إرسال رسالتك بنجاح!",
+    "error": "حدث خطأ أثناء الإرسال"
+  }
+}
