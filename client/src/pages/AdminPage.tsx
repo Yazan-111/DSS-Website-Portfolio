@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const thmanyahMedium = "'thmanyah serif display-Medium', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold = "'thmanyah serif display-Bold', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
@@ -16,6 +17,7 @@ interface Contact {
 }
 
 export default function AdminPage() {
+    const { t } = useLanguage();
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState<"announcements" | "contacts">("announcements");
