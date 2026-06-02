@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const thmanyahMedium = "'thmanyah serif display-Medium', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold = "'thmanyah serif display-Bold', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
@@ -7,6 +8,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEg
 
 export default function ContactPage() {
   const [name, setName] = useState("");
+    const { t, language } = useLanguage();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -119,8 +121,7 @@ export default function ContactPage() {
               className="text-center p-4 rounded-2xl"
               style={{ backgroundColor: "#d4edda", color: "#155724", fontFamily: thmanyahMedium }}
             >
-              ✅ تم إرسال رسالتك بنجاح! سنرد عليك قريباً.
-            </div>
+            ✅ {t('contact.success')}            </div>
           )}
 
           {status === "error" && (
@@ -128,8 +129,7 @@ export default function ContactPage() {
               className="text-center p-4 rounded-2xl"
               style={{ backgroundColor: "#f8d7da", color: "#721c24", fontFamily: thmanyahMedium }}
             >
-              ❌ حدث خطأ. تأكد من ملء جميع الحقول المطلوبة وحاول مرة أخرى.
-            </div>
+            ❌ {t('contact.error')}            </div>
           )}
 
           <button
@@ -138,8 +138,7 @@ export default function ContactPage() {
             className="w-full py-3 rounded-2xl text-white text-lg transition-opacity hover:opacity-90 disabled:opacity-50"
             style={{ backgroundColor: "#6e533a", fontFamily: thmanyahBold }}
           >
-            {loading ? "جاري الإرسال..." : "إرسال الرسالة"}
-          </button>
+          {loading ? t('contact.sending') : t('contact.submit')}          </button>
         </form>
       </div>
     </main>
