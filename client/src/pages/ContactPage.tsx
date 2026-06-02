@@ -23,12 +23,16 @@ export default function ContactPage() {
     setLoading(true);
     setStatus("");
     try {
+      consconst formData = new URLSearchParams();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('message', message);
+
       const res = await fetch(`${SCRIPT_URL}?action=addContact`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
-      });
-      if (res.ok) {
+        body: formData,
+        redirect: "follow"
+      });res.ok) {
         setStatus("success");
         setName("");
         setEmail("");
