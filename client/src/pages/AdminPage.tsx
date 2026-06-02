@@ -137,6 +137,14 @@ export default function AdminPage() {
             style={inputStyle}
             required
           />
+                      <input
+              type="text"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              placeholder="أدخل رمز التحقق"
+              style={inputStyle}
+              required
+            />
           <button
             type="submit"
             className="w-full mt-5 py-3 rounded-2xl text-white text-lg"
