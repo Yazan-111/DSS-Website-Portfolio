@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  base: "/DSS-Website-Portfolio/",
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: {
@@ -14,12 +14,11 @@ export default defineConfig({
   },
   root: path.resolve(__dirname, "client"),
   build: {
-    outDir: path.resolve(__dirname, "dist/public"),
+    outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, "client", "index.html"),
-        404: path.resolve(__dirname, "client", "404.html"),
       },
     },
   },
