@@ -3,8 +3,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 
 const thmanyahMedium = "'thmanyah serif display-Medium', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold = "'thmanyah serif display-Bold', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi/exec";
-const ADMIN_PASSWORD = "DSS2026";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhuiFyQlCBIAJYQjmWIypMxGTExw2l49xf_K-VX9M5dGP7EjPJerC-MiYW3JIWVDXMIA/exec";const ADMIN_PASSWORD = "DSS2026";
 const VERIFICATION_CODE = "42"; // رمز التحقق الثنائي
 
 type Priority = "أولوية قصوى" | "أولوية متوسطة" | "تحديثات";
@@ -55,7 +54,9 @@ export default function AdminPage() {
     setContactsLoading(true);
     setContactsError("");
     try {
-      const res = await fetch(`${SCRIPT_URL}?action=getContacts`);
+      const res = await fetch(`${SCRIPT_URL}?action=getContacts`), {
+        redirect: "follow"
+      })
       const result = await res.json();
       if (result.success) {
         setContacts(result.data);
