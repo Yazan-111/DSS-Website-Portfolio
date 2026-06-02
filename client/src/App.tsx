@@ -14,7 +14,7 @@ import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
-    <WouterRouter base="/DSS-Website-Portfolio">
+          <WouterRouter base="/">
       <div className="flex min-h-screen flex-col" style={{ backgroundColor: "#efefef" }}>
         <Navbar />
         <div className="flex-1">
