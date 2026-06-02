@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import { DssLandingPage } from "@/pages/DssLandingPage";
 import GuidePage from "@/pages/GuidePage";
 import ContactPage from "@/pages/ContactPage";
@@ -14,6 +15,7 @@ import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
+        <LanguageProvider>
           <WouterRouter base="/">
       <div className="flex min-h-screen flex-col" style={{ backgroundColor: "#efefef" }}>
         <Navbar />
@@ -29,6 +31,7 @@ function Router() {
         </div>
         <Footer />
       </div>
+                </LanguageProvider>
     </WouterRouter>
   );
 }
