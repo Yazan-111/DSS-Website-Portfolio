@@ -1,0 +1,50 @@
+{
+  "nav": {
+    "home": "Home",
+    "botGuide": "Bot Guide",
+    "contact": "Contact Us"
+  },
+  "home": {
+    "title": "Daily School Schedule",
+    "subtitle": "DSS",
+    "description": "A Telegram bot that sends you your daily schedule every morning",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  },
+  "admin": {
+    "title": "Control Panel",
+    "login": "Admin Login",
+    "password": "Password",
+    "enterPassword": "Enter password",
+    "loginButton": "Login",
+    "logout": "Logout",
+    "announcementsTab": "Publish Announcement",
+    "messagesTab": "Inbox",
+    "announcementTitle": "Announcement Title",
+    "announcementContent": "Announcement Content",
+    "announcementContentPlaceholder": "Write announcement details here...",
+    "priority": "Priority",
+    "experiments": "Experiments",
+    "publish": "Publish Announcement",
+    "noMessages": "Cannot connect to server",
+    "loading": "Loading..."
+  },
+  "announcements": {
+    "title": "Announcements",
+    "noAnnouncements": "No announcements at the moment",
+    "loading": "Loading..."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "nameLabel": "Name",
+    "namePlaceholder": "Enter your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Your email",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Write your message here...",
+    "submit": "Send",
+    "sending": "Sending...",
+    "success": "Your message has been sent successfully!",
+    "error": "An error occurred while sending"
+  }
+}
