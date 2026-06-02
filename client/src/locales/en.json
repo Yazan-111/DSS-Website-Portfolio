@@ -16,6 +16,8 @@
     "login": "Admin Login",
     "password": "Password",
     "enterPassword": "Enter password",
+        "verificationCode": "Verification Code",
+    "enterVerificationCode": "Enter verification code",
     "loginButton": "Login",
     "logout": "Logout",
     "announcementsTab": "Publish Announcement",
