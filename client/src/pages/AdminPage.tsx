@@ -5,6 +5,7 @@ const thmanyahMedium = "'thmanyah serif display-Medium', 'Tajawal', 'Noto Naskh 
 const thmanyahBold = "'thmanyah serif display-Bold', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfyI7wfy9sVrjQA-kEgH9GAaq7kAtorEmRa-TRLkvL8KOoC1h1p-dDDF-RPrl3zQi/exec";
 const ADMIN_PASSWORD = "DSS2026";
+const VERIFICATION_CODE = "42"; // رمز التحقق الثنائي
 
 type Priority = "أولوية قصوى" | "أولوية متوسطة" | "تحديثات";
 
@@ -19,6 +20,8 @@ interface Contact {
 export default function AdminPage() {
     const { t } = useLanguage();
   const [authenticated, setAuthenticated] = useState(false);
+    const [verificationCode, setVerificationCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState<"announcements" | "contacts">("announcements");
 
@@ -36,8 +39,7 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setAuthenticated(true);
+    if (password === ADMIN_PASSWORD && verificationCode === VERIFICATION_CODE) {      setAuthenticated(true);
       localStorage.setItem("adminAuth", "true");
     } else {
       alert("❌ كلمة مرور خاطئة");
