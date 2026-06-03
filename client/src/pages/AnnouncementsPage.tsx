@@ -90,7 +90,7 @@ export default function AnnouncementsPage() {
   
   const fetchAnnouncements = async () => {
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=getAnnouncements`), {
+      const response = await fetch(`${SCRIPT_URL}?action=getAnnouncements`, {
         redirect: "follow"
       })
       const result = await response.json();
