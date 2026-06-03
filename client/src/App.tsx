@@ -11,10 +11,12 @@ import ContactPage from "@/pages/ContactPage";
 import AnnouncementsPage from "@/pages/AnnouncementsPage";
 import AdminPage from "@/pages/AdminPage";
 import NotFound from "@/pages/not-found";
+import { Analytics } from "@vercel/analytics/react";
 
 function Router() {
   return (
     <WouterRouter base="/">
+  
       <div className="flex min-h-screen flex-col" style={{ backgroundColor: "#efefef" }}>
         <Navbar />
         <div className="flex-1">
@@ -29,7 +31,8 @@ function Router() {
         </div>
         <Footer />
       </div>
-    </WouterRouter>
+          <Analytics />
+</WouterRouter>
   );
 }
 
