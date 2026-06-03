@@ -54,7 +54,7 @@ export default function AdminPage() {
     setContactsLoading(true);
     setContactsError("");
     try {
-      const res = await fetch(`${SCRIPT_URL}?action=getContacts`), {
+      const res = await fetch(`${SCRIPT_URL}?action=getContacts`, {
         redirect: "follow"
       })
       const result = await res.json();
