@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
-import { useLanguage } from "../contexts/LanguageContext";
-import LanguageSwitcher from "./LanguageSwitcher";
 
 const thmanyahMedium = "'thmanyah serif display-Medium', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold = "'thmanyah serif display-Bold', 'Noto Naskh Arabic', 'Amiri', serif";
@@ -10,16 +8,15 @@ const thmanyahBold = "'thmanyah serif display-Bold', 'Noto Naskh Arabic', 'Amiri
 export function Navbar() {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
-  const { t, language } = useLanguage();
 
   const navLinks = [
-    { href: "/contact", label: t('nav.contact') },
-    { href: "/guide", label: t('nav.botGuide') },
-    { href: "/", label: t('nav.home') },
+    { href: "/contact", label: "تواصل معنا" },
+    { href: "/guide", label: "دليل البوت" },
+    { href: "/", label: "الرئيسية" },
   ];
 
   return (
-    <header dir={language === 'ar' ? 'rtl' : 'ltr'} className="sticky top-0 z-50 w-full" style={{ backgroundColor: "#efefef" }}>
+    <header dir="rtl" className="sticky top-0 z-50 w-full" style={{ backgroundColor: "#efefef" }}>
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-4 sm:px-5 lg:px-6">
         {/* Logo */}
         <Link href="/" data-testid="link-logo">
@@ -30,28 +27,23 @@ export function Navbar() {
             DSS
           </span>
         </Link>
-
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-2">
-          <LanguageSwitcher />
-          <div className="flex items-center gap-8" style={{ fontFamily: thmanyahMedium }}>
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                <span
-                  className={
-                    location === link.href
-                      ? "cursor-pointer text-[#6e533a] font-semibold"
-                      : "cursor-pointer text-gray-700 hover:text-[#6e533a] transition-colors"
-                  }
-                  style={{ fontSize: "1.1rem" }}
-                >
-                  {link.label}
-                </span>
-              </Link>
-            ))}
-          </div>
+        <nav className="hidden md:flex items-center gap-8" style={{ fontFamily: thmanyahMedium }}>
+          {navLinks.map((link) => (
+            <Link key={link.href} href={link.href}>
+              <span
+                className={
+                  location === link.href
+                    ? "cursor-pointer text-[#6e533a] font-semibold"
+                    : "cursor-pointer text-gray-700 hover:text-[#6e533a] transition-colors"
+                }
+                style={{ fontSize: "1.1rem" }}
+              >
+                {link.label}
+              </span>
+            </Link>
+          ))}
         </nav>
-
         {/* Mobile Menu Button */}
         <button
           className="md:hidden"
@@ -61,12 +53,10 @@ export function Navbar() {
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
-
       {/* Mobile Navigation */}
       {open && (
         <div className="md:hidden bg-[#efefef] border-t border-gray-300" style={{ fontFamily: thmanyahMedium }}>
           <div className="flex flex-col px-4 py-3 space-y-3">
-            <LanguageSwitcher />
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
