@@ -1,18 +1,13 @@
 import { useState } from "react";
-import { useLanguage } from "../contexts/LanguageContext";
-
 const thmanyahMedium = "'thmanyah serif display-Medium', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
 const thmanyahBold = "'thmanyah serif display-Bold', 'Tajawal', 'Noto Naskh Arabic', 'Amiri', serif";
-
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhuiFyQlCBIAJYQjmWIypMxGTExw2l49xf_K-VX9M5dGP7EjPJerC-MiYW3JIWVDXMIA/exec";
 export default function ContactPage() {
   const [name, setName] = useState("");
-    const { t, language } = useLanguage();
-  const [email, setEmail] = useState("");
+  const [chatCode, setChatCode] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<"" | "success" | "error">("")
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) {
@@ -22,19 +17,19 @@ export default function ContactPage() {
     setLoading(true);
     setStatus("");
     try {
-      consconst formData = new URLSearchParams();
+      const formData = new URLSearchParams();
       formData.append('name', name);
-      formData.append('email', email);
+      formData.append('chatCode', chatCode);
       formData.append('message', message);
-
       const res = await fetch(`${SCRIPT_URL}?action=addContact`, {
         method: "POST",
         body: formData,
         redirect: "follow"
-      });res.ok) {
+      });
+      if (res.ok) {
         setStatus("success");
         setName("");
-        setEmail("");
+        setChatCode("");
         setMessage("");
       } else {
         setStatus("error");
@@ -45,7 +40,6 @@ export default function ContactPage() {
       setLoading(false);
     }
   };
-
   const inputStyle = {
     fontFamily: thmanyahMedium,
     backgroundColor: "#fff",
@@ -58,7 +52,6 @@ export default function ContactPage() {
     color: "#1e1e1e",
     transition: "border-color 0.2s",
   };
-
   return (
     <main dir="rtl" className="min-h-screen" style={{ backgroundColor: "#efefef" }}>
       {/* Hero */}
@@ -70,13 +63,11 @@ export default function ContactPage() {
           تواصل معنا
         </h1>
       </div>
-
       {/* Form */}
       <div className="mx-auto max-w-xl px-4 py-10">
         <p className="mb-8 text-center text-lg text-gray-600" style={{ fontFamily: thmanyahMedium }}>
           لديك مشكلة أو اقتراح؟ تواصل معنا وسنرد عليك فور ممكن
         </p>
-
         <form onSubmit={handleSubmit} className="grid gap-5">
           <div>
             <label className="block mb-1 text-sm text-[#5a3e28]" style={{ fontFamily: thmanyahMedium }}>
@@ -91,20 +82,18 @@ export default function ContactPage() {
               required
             />
           </div>
-
           <div>
             <label className="block mb-1 text-sm text-[#5a3e28]" style={{ fontFamily: thmanyahMedium }}>
-              البريد الإلكتروني (اختياري)
+              رمز المحادثة من البوت (اختياري)
             </label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@email.com"
+              type="text"
+              value={chatCode}
+              onChange={(e) => setChatCode(e.target.value)}
+              placeholder="أدخل رمز المحادثة هنا"
               style={{ ...inputStyle, direction: "ltr" }}
             />
           </div>
-
           <div>
             <label className="block mb-1 text-sm text-[#5a3e28]" style={{ fontFamily: thmanyahMedium }}>
               الرسالة *
@@ -118,30 +107,30 @@ export default function ContactPage() {
               required
             />
           </div>
-
           {status === "success" && (
             <div
               className="text-center p-4 rounded-2xl"
               style={{ backgroundColor: "#d4edda", color: "#155724", fontFamily: thmanyahMedium }}
             >
-            ✅ {t('contact.success')}            </div>
+              ✅ تم إرسال رسالتك بنجاح!
+            </div>
           )}
-
           {status === "error" && (
             <div
               className="text-center p-4 rounded-2xl"
               style={{ backgroundColor: "#f8d7da", color: "#721c24", fontFamily: thmanyahMedium }}
             >
-            ❌ {t('contact.error')}            </div>
+              ❌ حدث خطأ، تأكد من ملء جميع الحقول المطلوبة وحاول مجدداً
+            </div>
           )}
-
           <button
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-2xl text-white text-lg transition-opacity hover:opacity-90 disabled:opacity-50"
             style={{ backgroundColor: "#6e533a", fontFamily: thmanyahBold }}
           >
-          {loading ? t('contact.sending') : t('contact.submit')}          </button>
+            {loading ? "جاري الإرسال..." : "إرسال"}
+          </button>
         </form>
       </div>
     </main>
