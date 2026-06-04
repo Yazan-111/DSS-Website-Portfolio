@@ -4,46 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>الجدول الدراسي اليومي DSS</title>
-    <meta name="description" content="!بوت يرسل لك جدولك الدراسي الخاص بك يوميًا - ويحله بالذكاء الاصطناعي" />
+    <meta name="description" content="بوت يرسل لك جدولك الدراسي الخاص بك يومياً - ويخطط بالذكاء الاصطناعي!" />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="الجدول الدراسي اليومي DSS" />
-    <meta property="og:description" content="!بوت يرسل لك جدولك الدراسي الخاص بك يوميًا - ويحله بالذكاء الاصطناعي" />
+    <meta property="og:title" content="DSS الجدول الدراسي اليومي" />
+    <meta property="og:description" content="بوت يرسل لك جدولك الدراسي الخاص بك يومياً - ويخطط بالذكاء الاصطناعي!" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="الجدول الدراسي اليومي DSS" />
-    <meta name="twitter:description" content="!بوت يرسل لك جدولك الدراسي الخاص بك يوميًا - ويحله بالذكاء الاصطناعي" />
+    <meta name="twitter:title" content="DSS الجدول الدراسي اليومي" />
+    <meta name="twitter:description" content="بوت يرسل لك جدولك الدراسي الخاص بك يومياً - ويخطط بالذكاء الاصطناعي!" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700;800&family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
-      /* Thmanyah Serif Display - restricted font, loaded locally if available */
-      /* @FONTWARNING[{"type": "restricted", "family": "thmanyah serif display-Medium", "weight": "500", "style": "normal", "allowsCrossOrigin": false}] */
+      /* Thmanyah Serif Display */
       @font-face {
         font-family: "thmanyah serif display-Medium";
-        src: local("thmanyah serif display-Medium"),
+        src: url("/woff2%20Thmanyah%20fonts/thmanyahserifdisplay-Medium.woff2") format("woff2"),
+             local("thmanyah serif display-Medium"),
              local("ThmanyahSerifDisplay-Medium");
         font-weight: 500;
         font-style: normal;
+        font-display: swap;
         font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
       }
-      /* @FONTWARNING[{"type": "restricted", "family": "thmanyah serif display-Bold", "weight": "700", "style": "normal", "allowsCrossOrigin": false}] */
+
       @font-face {
         font-family: "thmanyah serif display-Bold";
-        src: local("thmanyah serif display-Bold"),
+        src: url("/woff2%20Thmanyah%20fonts/thmanyahserifdisplay-Bold.woff2") format("woff2"),
+             local("thmanyah serif display-Bold"),
              local("ThmanyahSerifDisplay-Bold");
         font-weight: 700;
         font-style: normal;
+        font-display: swap;
         font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
       }
+
       /* Apply stylistic alternates globally to all thmanyah text */
       [style*="thmanyah"], .thmanyah {
         font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
         -webkit-font-feature-settings: "salt" 1, "ss01" 1, "calt" 1, "liga" 1;
       }
-      /* Fallback: use IBM+Plex+Sans+Arabic when thmanyah is not installed locally */
+
+      /* Fallback: use IBM Plex Sans Arabic when thmanyah is not available */
       body {
-        font-family: "thmanyah serif display-Medium", "IBM+Plex+Sans+Arabic", "Amiri", "Noto Naskh Arabic", sans-serif;
+        font-family: "thmanyah serif display-Medium", "IBM Plex Sans Arabic", "Amiri", "Noto Naskh Arabic", sans-serif;
       }
     </style>
     <script type="module" crossorigin src="/assets/main-IGcj8l2w.js"></script>
